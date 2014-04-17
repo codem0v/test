@@ -1,0 +1,4 @@
+autoscript
+==========
+
+auto install
