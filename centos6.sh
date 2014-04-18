@@ -124,12 +124,35 @@ wget -O /etc/openvpn/1194.conf "https://github.com/ardi85/autoscript/blob/master
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-wget -O /etc/iptables.up.rules "https://raw.github.com/yurisshOS/debian7/master/iptables.up.rules"
-sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
-sed -i $MYIP2 /etc/iptables.up.rules;
-iptables-restore < /etc/iptables.up.rules
+
+if [ "$ether" = "venet0" ]
+then
+      iptables -t nat -A POSTROUTING -o venet0 -j SNAT --to-source $MYIP
+else
+      iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+fi
+
+#wget -O /etc/iptables.up.rules "https://raw.github.com/yurisshOS/debian7/master/iptables.up.rules"
+#sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
+#sed -i $MYIP2 /etc/iptables.up.rules;
+#iptables-restore < /etc/iptables.up.rules
+service iptables save
+service iptables restart
+chkconfig iptables on
 service openvpn restart
 
+# configure openvpn client config
+cd /etc/openvpn/
+wget -O /etc/openvpn/1194-client.ovpn "https://github.com/ardi85/autoscript/raw/master/1194-client.conf"
+sed -i $MYIP2 /etc/openvpn/1194-client.ovpn;
+echo "<ca>" >> /etc/openvpn/1194-client.ovpn
+cat /etc/openvpn/easy-rsa/2.0/keys/ca.crt >> /etc/openvpn/1194-client.ovpn
+echo -e "</ca>\n" >> /etc/openvpn/1194-client.ovpn
+echo "username" >> pass.txt
+echo "password" >> pass.txt
+tar cf client.tar 1194-client.ovpn pass.txt
+cp client.tar /home/vps/public_html/
+cd
 
 # install badvpn
 wget -O /usr/bin/badvpn-udpgw "http://script.jualssh.com/badvpn-udpgw"
