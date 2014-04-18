@@ -2,7 +2,7 @@
 
 # initialisasi var
 OS=`uname -p`;
-ether='ip -o l|perl -lane'$F[1]=~s/://g;print $F[1]' | grep -v lo';
+ether='ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d' | grep -v venet0:';
 MYIP=`curl -s ifconfig.me`;
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 
@@ -45,7 +45,9 @@ rm -f *.rpm
 # remove unused
 yum -y remove sendmail;
 yum -y remove httpd;
-yum -y remove cyrus-sasl
+yum -y remove cyrus-sasl;
+yum -y remove samba*;
+yum -y remove bind9*'
 
 # update
 yum -y update
