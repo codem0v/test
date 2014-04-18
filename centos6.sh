@@ -2,7 +2,8 @@
 
 # initialisasi var
 OS=`uname -p`;
-ether='ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d' | grep -v venet0:';
+ether=`ifconfig | cut -c 1-8 | sort | uniq -u | grep -v lo | grep -v venet0:`;
+#ether='ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d' | grep -v venet0:';
 MYIP=`curl -s ifconfig.me`;
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 
