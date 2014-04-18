@@ -59,7 +59,7 @@ chkconfig nginx on
 chkconfig php-fpm on
 
 # install essential package
-yum -y install iftop htop nmap bc nethogs vnstat ngrep mtr git zsh mrtg unrar rsyslog rkhunter mrtg net-snmp net-snmp-utils expect nano bind-utils
+yum -y install iftop htop nmap bc nethogs openvpn vnstat ngrep mtr git zsh mrtg unrar rsyslog rkhunter mrtg net-snmp net-snmp-utils expect nano bind-utils
 yum -y groupinstall 'Development Tools'
 yum -y install cmake
 
@@ -96,6 +96,40 @@ sed -i 's/apache/nginx/g' /etc/php-fpm.d/www.conf
 chmod -R +rx /home/vps
 service php-fpm restart
 service nginx restart
+
+# install openvpn
+cd /etc/openvpn/
+wget --no-check-certificate -O ~/easy-rsa.tar.gz https://github.com/OpenVPN/easy-rsa/archive/2.2.2.tar.gz
+tar xzf ~/easy-rsa.tar.gz -C ~/
+mkdir -p /etc/openvpn/easy-rsa/2.0/
+cp ~/easy-rsa-2.2.2/easy-rsa/2.0/* /etc/openvpn/easy-rsa/2.0/
+rm -rf ~/easy-rsa-2.2.2
+
+cd /etc/openvpn/easy-rsa/2.0/
+cp -u -p openssl-1.0.0.cnf openssl.cnf
+sed -i 's|export KEY_SIZE=1024|export KEY_SIZE=2048|' /etc/openvpn/easy-rsa/2.0/vars
+. /etc/openvpn/easy-rsa/2.0/vars
+. /etc/openvpn/easy-rsa/2.0/clean-all
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" --initca $*
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" --server server
+export KEY_CN="$CLIENT"
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" $CLIENT
+. /etc/openvpn/easy-rsa/2.0/build-dh
+
+
+wget -O /etc/openvpn/1194.conf "https://github.com/ardi85/autoscript/blob/master/1194-centos.conf"
+service openvpn restart
+sysctl -w net.ipv4.ip_forward=1
+sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+wget -O /etc/iptables.up.rules "https://raw.github.com/yurisshOS/debian7/master/iptables.up.rules"
+sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
+sed -i $MYIP2 /etc/iptables.up.rules;
+iptables-restore < /etc/iptables.up.rules
+service openvpn restart
+
 
 # install badvpn
 wget -O /usr/bin/badvpn-udpgw "http://script.jualssh.com/badvpn-udpgw"
