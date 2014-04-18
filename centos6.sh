@@ -180,7 +180,8 @@ cd
 wget -O speedtest_cli.py "https://raw.github.com/sivel/speedtest-cli/master/speedtest_cli.py"
 wget -O bench-network.sh "https://raw.github.com/ardi85/austoscript/bench-network.sh"
 wget -O ps_mem.py "https://raw.github.com/pixelb/ps_mem/master/ps_mem.py"
-curl http://internetku.net/files/ceklogin.sh > ceklogin.sh
+#curl http://internetku.net/files/ceklogin.sh > ceklogin.sh
+wghet https://github.com/ardi85/autoscript/raw/master/ceklogin.sh
 chmod +x speedtest_cli.py
 chmod +x ps_mem.py
 sed -i 's/auth.log/secure/g' ceklogin.sh
