@@ -47,8 +47,6 @@ rm -f *.rpm
 yum -y remove sendmail;
 yum -y remove httpd;
 yum -y remove cyrus-sasl;
-yum -y remove samba*;
-yum -y remove bind9*'
 
 # update
 yum -y update
