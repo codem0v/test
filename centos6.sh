@@ -74,7 +74,7 @@ chkconfig exim off
 vnstat -u -i $ether
 echo "MAILTO=root" > /etc/cron.d/vnstat
 echo "*/5 * * * * root /usr/sbin/vnstat.cron" >> /etc/cron.d/vnstat
-sed -i 's/eth0/$ether/g' /etc/sysconfig/vnstat
+sed -i "s/eth0/$ether/" /etc/sysconfig/vnstat
 service vnstat restart
 chkconfig vnstat on
 
@@ -208,7 +208,7 @@ tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
 cd vnstat
-sed -i 's/eth0/$ether/g' config.php
+sed -i "s/eth0/$ether/ config.php
 sed -i "s/\$iface_list = array('$ether', 'sixxs');/\$iface_list = array('$ether');/g" config.php
 sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
 sed -i 's/Internal/Internet/g' config.php
