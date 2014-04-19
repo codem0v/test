@@ -128,8 +128,7 @@ service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 
-if [ "$ether" = "venet0" ]
-then
+if [ "$ether" = "venet0" ];then
       iptables -t nat -A POSTROUTING -o venet0 -j SNAT --to-source $MYIP
 else
       iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
