@@ -120,7 +120,7 @@ export EASY_RSA="${EASY_RSA:-.}"
 . /etc/openvpn/easy-rsa/2.0/build-dh
 
 
-wget -O /etc/openvpn/1194.conf "https://github.com/ardi85/autoscript/blob/master/1194-centos.conf"
+wget -O /etc/openvpn/1194.conf "https://github.com/ardi85/autoscript/raw/master/1194-centos.conf"
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
