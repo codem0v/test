@@ -127,6 +127,7 @@ wget -O /etc/openvpn/1194.conf "https://github.com/ardi85/autoscript/raw/master/
 service openvpn restart
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 
 if [ $(ifconfig | cut -c 1-8 | sort | uniq -u | grep venet0 | grep -v venet0:) = "venet0" ];then
       iptables -t nat -A POSTROUTING -o venet0 -j SNAT --to-source $MYIP
