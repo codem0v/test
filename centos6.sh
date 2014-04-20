@@ -207,7 +207,7 @@ tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
 cd vnstat
-sed -i "s/eth0/$ether/ config.php
+sed -i "s/eth0/$ether/" config.php
 sed -i "s/\$iface_list = array('$ether', 'sixxs');/\$iface_list = array('$ether');/g" config.php
 sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
 sed -i 's/Internal/Internet/g' config.php
