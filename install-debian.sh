@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #############################################
 # Install vps for indonesian phreak
@@ -325,7 +325,6 @@ END
 	# without asking for them
 
 cat >> ~/ovpn-$CLIENT/$CLIENT.conf <<-END
-klient="
 client
 proto tcp
 persist-key
