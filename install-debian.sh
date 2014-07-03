@@ -252,7 +252,7 @@ else
 	# DH params
 	. /etc/openvpn/easy-rsa/2.0/build-dh
 	# Let's configure the server
-cat > /etc/openvpn/server.conf << END
+cat > /etc/openvpn/server.conf <<-END
 port 1194
 proto tcp
 dev tun
@@ -324,7 +324,7 @@ END
 	# IP/port set on the default client.conf so we can add further users
 	# without asking for them
 
-cat >> ~/ovpn-$CLIENT/$CLIENT.conf << END
+cat >> ~/ovpn-$CLIENT/$CLIENT.conf <<-END
 klient="
 client
 proto tcp
