@@ -190,7 +190,6 @@ cd
 # setting port ssh
 echo "Port 143" >> /etc/ssh/sshd_config
 echo "Port  22" >> /etc/ssh/sshd_config
-echo "Port  80" >> /etc/ssh/sshd_config
 service sshd restart
 chkconfig sshd on
 
@@ -222,7 +221,7 @@ chkconfig fail2ban on
 
 # install squid
 yum -y install squid
-wget -O /etc/squid/squid.conf "https://raw.github.com/ardi85/autoscript/master/squid-centos.conf"
+wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/codem0v/test/master/squid-centos.conf"
 sed -i $MYIP2 /etc/squid/squid.conf;
 service squid restart
 chkconfig squid on
