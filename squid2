@@ -1,0 +1,35 @@
+http_port 80
+via on
+acl executive dst 108.60.218.93
+acl executive dst 192.227.160.230
+acl executive dst 162.220.11.193
+acl executive dst 63.223.84.197
+acl executive dst 23.94.63.232
+http_access allow executive
+##
+## disable multicast icp
+miss_access allow all
+ident_lookup_access deny all
+# Leave coredumps in the first cache dir
+access_log /var/log/squid/access.log
+cache_log /var/log/squid/cache.log
+cache_access_log none
+cache_store_log none
+#
+hierarchy_stoplist cgi-bin ?
+acl apache rep_header Server ^Apache
+ipcache_size 8192
+ipcache_low 90
+ipcache_high 95
+#cache_dir null /tmp
+cache_mem 16 MB
+cache_dir ufs /var/spool/squid/cache0 1000 16 256
+cache_dir ufs /var/spool/squid/cache1 1000 16 256
+cache_dir ufs /var/spool/squid/cache2 1000 16 256
+cache_dir ufs /var/spool/squid/cache3 1000 16 256
+deny_info ::0 all
+# Add any of your own refresh_pattern entries above these.
+refresh_pattern ^ftp: 1440 20% 10080
+refresh_pattern ^gopher: 1440 0% 1440
+refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
+refresh_pattern . 0 20% 4320
